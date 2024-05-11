@@ -29,6 +29,10 @@ public class Book {
     public Book() {
     }
 
+    public Book(Long id) {
+        this.id = id;
+    }
+
     public Book(Long id, String title, String author, int publicationYear, String isbn, String genre, String language, int numberOfPages, String publisher) {
         this.id = id;
         this.title = title;
