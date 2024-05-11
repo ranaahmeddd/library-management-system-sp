@@ -24,6 +24,10 @@ public class Patron {
     public Patron() {
     }
 
+    public Patron(Long id) {
+        this.id = id;
+    }
+
     public Patron(Long id, String name, String contactInformation, String address, String email) {
         this.id = id;
         this.name = name;
