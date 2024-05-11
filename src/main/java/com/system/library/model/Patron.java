@@ -10,10 +10,10 @@ public class Patron {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "Name is required")
     private String name;
 
-    @NotNull
+    @NotBlank(message = "Contact Information is required")
     private String contactInformation;
 
     private String address;

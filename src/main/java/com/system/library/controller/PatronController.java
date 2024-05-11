@@ -1,10 +1,14 @@
 package com.system.library.controller;
 
+import com.system.library.model.Book;
 import com.system.library.model.Patron;
 import com.system.library.service.PatronService;
+import com.system.library.util.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -18,18 +22,25 @@ public class PatronController {
 
     @GetMapping
     public ResponseEntity<List<Patron>> getAllPatrons() {
-        return (ResponseEntity<List<Patron>>) patronService.getAllPatrons();
+        List<Patron> patrons = patronService.getAllPatrons();
+        return ResponseEntity.ok(patrons) ;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Patron> getPatronById(@PathVariable Long id) {
         Optional<Patron> patron = patronService.getPatronById(id);
-        return patron.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        if (patron.isPresent()) {
+            return ResponseEntity.ok(patron.get());
+        } else {
+            throw new ResourceNotFoundException("Patron not found with id: " + id);
+        }
     }
 
     @PostMapping
-    public ResponseEntity<Patron> addPatron(@RequestBody Patron patron) {
+    public ResponseEntity<Patron> addPatron(@Valid @RequestBody Patron patron, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(patron);
+        }
         Patron addedPatron = patronService.addPatron(patron);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedPatron);
     }

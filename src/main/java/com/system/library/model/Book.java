@@ -10,10 +10,10 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "Title is required")
     private String title;
 
-    @NotNull
+    @NotBlank(message = "Author is required")
     private String author;
 
     @NotNull
