@@ -1,6 +1,5 @@
 package com.system.library.service.impl;
 
-import com.system.library.model.Book;
 import com.system.library.model.BorrowingRecord;
 import com.system.library.model.Patron;
 import com.system.library.repository.BorrowingRecordRepository;
