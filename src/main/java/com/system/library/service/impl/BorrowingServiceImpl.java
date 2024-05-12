@@ -9,6 +9,8 @@ import com.system.library.repository.PatronRepository;
 import com.system.library.service.BorrowingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -25,6 +27,7 @@ public class BorrowingServiceImpl implements BorrowingService {
     @Autowired
     private PatronRepository patronRepository;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void borrowBook(Long bookId, Long patronId) {
         Optional<Book> bookOptional = bookRepository.findById(bookId);
@@ -51,6 +54,7 @@ public class BorrowingServiceImpl implements BorrowingService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void returnBook(Long bookId, Long patronId) {
         Optional<BorrowingRecord> borrowingRecordOptional = borrowingRecordRepository.findByBookIdAndPatronIdAndReturnedFalse(bookId, patronId);

@@ -8,6 +8,8 @@ import com.system.library.repository.PatronRepository;
 import com.system.library.service.PatronService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,21 +21,25 @@ public class PatronServiceImpl implements PatronService {
     @Autowired
     private BorrowingRecordRepository borrowingRecordRepository;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public List<Patron> getAllPatrons() {
         return (List<Patron>) patronRepository.findAll();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Optional<Patron> getPatronById(Long id) {
         return patronRepository.findById(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Patron addPatron(Patron patron) {
         return patronRepository.save(patron);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Patron updatePatron(Long id, Patron updatedPatron) {
         if (patronRepository.existsById(id)) {
@@ -44,6 +50,7 @@ public class PatronServiceImpl implements PatronService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deletePatron(Long id) {
         Optional<Patron> patron = patronRepository.findById(id);
