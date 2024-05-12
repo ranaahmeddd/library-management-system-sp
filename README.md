@@ -1,10 +1,11 @@
 # library-management-system-sp
 Library management system API Using Spring Boot
 
-First:
+*First:*
 1.	Clone the project from the GitHub repo: https://github.com/ranaahmeddd/library-management-system-sp.git 
 2.	Open the project on the IDE and navigate to the branch develop to find all the code and to run the project local.
-Second:
+   
+*Second:*
 1.	You need to have MySQL workbench and MySQL installed on your computer.
 2.	open src/main/resources/application.properties file, and change:
 spring.datasource.username=”your username”
