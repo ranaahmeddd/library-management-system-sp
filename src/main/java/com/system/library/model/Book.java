@@ -1,7 +1,8 @@
 package com.system.library.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "books")
@@ -19,11 +20,16 @@ public class Book {
     @NotNull
     private int publicationYear;
 
-    @NotNull
+    @NotBlank
     private String isbn;
+    @NotBlank
     private String genre;
+    @NotBlank
     private String language;
+
+    @NotNull
     private int numberOfPages;
+    @NotBlank
     private String publisher;
 
     public Book() {

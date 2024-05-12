@@ -1,7 +1,8 @@
 package com.system.library.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "patrons")
@@ -16,6 +17,7 @@ public class Patron {
     @NotBlank(message = "Contact Information is required")
     private String contactInformation;
 
+    @NotBlank(message = "address is required")
     private String address;
 
     @Email

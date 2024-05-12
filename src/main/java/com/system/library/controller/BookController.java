@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/books")
@@ -36,9 +38,13 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book, BindingResult result) {
+    public ResponseEntity<?> addBook(@Valid @RequestBody Book book, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(book);
+            List<String> errors = result.getAllErrors()
+                    .stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errors);
         }
         Book addedBook = bookService.addBook(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedBook);

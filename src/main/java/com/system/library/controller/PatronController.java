@@ -1,6 +1,5 @@
 package com.system.library.controller;
 
-import com.system.library.model.Book;
 import com.system.library.model.Patron;
 import com.system.library.service.PatronService;
 import com.system.library.util.ResourceNotFoundException;
@@ -9,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/patrons")
@@ -37,9 +39,13 @@ public class PatronController {
     }
 
     @PostMapping
-    public ResponseEntity<Patron> addPatron(@Valid @RequestBody Patron patron, BindingResult result) {
+    public ResponseEntity<?> addPatron(@Valid @RequestBody Patron patron, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(patron);
+            List<String> errors = result.getAllErrors()
+                    .stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errors);
         }
         Patron addedPatron = patronService.addPatron(patron);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedPatron);
