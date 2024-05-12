@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface BorrowingRecordRepository extends CrudRepository<BorrowingRecord, Long> {
     Optional<BorrowingRecord> findByBookIdAndPatronIdAndReturnedFalse(Long bookId, Long patronId);
     Optional<BorrowingRecord> findFirstByBookIdAndReturnedFalse(Long bookId);
-
-
+    Optional<BorrowingRecord> findFirstByBookId(Long bookId);
+    Optional<BorrowingRecord> findFirstByPatronId(Long patronId);
 }

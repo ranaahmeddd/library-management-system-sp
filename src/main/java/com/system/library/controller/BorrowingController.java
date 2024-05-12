@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/v1")
 public class BorrowingController {
 
     @Autowired

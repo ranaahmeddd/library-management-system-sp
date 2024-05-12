@@ -1,10 +1,13 @@
 package com.system.library.service.impl;
 
 import com.system.library.model.Book;
+import com.system.library.model.BorrowingRecord;
 import com.system.library.repository.BookRepository;
+import com.system.library.repository.BorrowingRecordRepository;
 import com.system.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +17,8 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private BorrowingRecordRepository borrowingRecordRepository;
     @Override
     public List<Book> getAllBooks() {
         return (List<Book>) bookRepository.findAll();
@@ -41,7 +46,18 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook(Long id) {
-        bookRepository.deleteById(id);
+        Optional<Book> book = bookRepository.findById(id);
+        if (book.isPresent() && !isBorrowed(id)) {
+            bookRepository.deleteById(id);
+        }else if (isBorrowed(id)) {
+            throw new IllegalStateException("Cannot Delete this book because it is already borrowed!");
+        } else {
+            throw new IllegalStateException("No existing book with id " + id +" to delete!");
+        }
+    }
+    private boolean isBorrowed(Long bookId) {
+        Optional<BorrowingRecord> activeBorrowingRecord = borrowingRecordRepository.findFirstByBookId(bookId);
+        return activeBorrowingRecord.isPresent();
     }
 }
 
